@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import "./App.css";
 
 const App = () => {
@@ -20,6 +22,18 @@ const App = () => {
       center: [-71.057083, 42.361145], // starting position
       zoom: 12, // starting zoom
     });
+
+    // Initialize draw controls
+    let draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {
+        polygon: true,
+        trash: true,
+      },
+      defaultMode: "draw_polygon",
+    });
+
+    map.addControl(draw, "top-left");
   };
 
   return (
