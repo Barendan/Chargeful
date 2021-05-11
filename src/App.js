@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
 const App = () => {
+  useEffect(() => {
+    BuildMap();
+  }, []);
+
   const BuildMap = () => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoiYmFyZW5kYW4iLCJhIjoiY2tvaG5iZTBhMG81czJwb2FwMDRlYW1pcyJ9.SHXta_yd3s5oPG5hymzdJA";
