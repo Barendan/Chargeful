@@ -44,3 +44,15 @@ p {
   margin: 0;
   font-size: 16px;
 }
+
+.header {
+  font-size: 50px;
+}
+
+.description {
+  position: relative;
+  width: 500px;
+  padding-bottom: 2%;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
