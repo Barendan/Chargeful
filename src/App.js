@@ -3,6 +3,8 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import turfArea from "@turf/area";
+
 import "./App.css";
 
 const App = () => {
@@ -34,7 +36,36 @@ const App = () => {
     });
 
     map.addControl(draw, "top-left");
+
+    const updateArea = (e) => {
+      let data = draw.getAll();
+      let answer = document.getElementById("result");
+
+      if (data.features.length > 0) {
+        let area = turfArea(data);
+        // console.log("area is", area);
+        let nominal_power = calculatePower(area);
+
+        answer.innerHTML =
+          "<p>Based on the area selected, the nominal power is <strong>" +
+          nominal_power +
+          " Watts.</strong></p>";
+      } else {
+        answer.innerHTML = "";
+        if (e.type !== "draw.delete")
+          alert("Use the draw tools to draw a polygon!");
+      }
+    };
+
+    map.on("draw.create", updateArea);
+    map.on("draw.delete", updateArea);
+    map.on("draw.update", updateArea);
   };
+
+  // Equation for nominal power
+  // E = A x r x H x PR
+  // calculatePower to max of 2 decimal points
+  const calculatePower = (area) => Math.round(area * 1000 * 0.18 * 100) / 100;
 
   return (
     <div className="App">
