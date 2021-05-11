@@ -3,6 +3,8 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import turfArea from "@turf/area";
 
 import "./App.css";
@@ -35,8 +37,18 @@ const App = () => {
       defaultMode: "draw_polygon",
     });
 
-    map.addControl(draw, "top-left");
+    // Initialize the geocoder
+    let geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl, // Set the mapbox-gl instance
+      marker: false, // Do not use the default marker style
+      placeholder: "Search for places", // Placeholder text for the search bar
+    });
 
+    map.addControl(draw, "top-left");
+    map.addControl(geocoder);
+
+    // callback function for when draw controls used
     const updateArea = (e) => {
       let data = draw.getAll();
       let answer = document.getElementById("result");
